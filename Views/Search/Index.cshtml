@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/Search/index.js"></script>
+
+<h2>Search</h2>
+Please choose which of the following are you willing to search :
+<select id="formSelector">
+    <option value="posts" selected="selected">Posts</option>
+    <option value="comments">Comments</option>
+    <option value="fans">Fans</option>
+    <option value="postComment">Cross post-comment search</option>
+</select>
+<div id="warning">
+</div>
+<div class="forms" id="posts">
+    @using (Html.BeginForm("Search", "Posts", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <h3>Posts</h3>
+        <p>
+            <label for="author">Author's name:</label>
+            <input type="text" name="author" class="postInput">
+        </p>
+        <p>
+            <label for="text">text</label>
+            <textarea name="text" id="text" class="postInput"></textarea>
+        </p>
+        <p>
+            <label for="postedBefore">Posted Before:</label>
+            <input type="date" name="postedBefore" class="postInput">
+        </p>
+        <p>
+            <label for="postedAfter">Posted After:</label>
+            <input type="date" name="postedAfter" class="postInput">
+        </p>
+
+        <input type="submit" value="Search" onclick="return ValidateInput('postInput', 'any')">
+    }
+</div>
+<div class="forms" id="comments">
+    @using (Html.BeginForm("Search", "Comments", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <h3>Comments</h3>
+        <p>
+            <label for="author">Author's name:</label>
+            <input type="text" name="author" class="commentInput">
+        </p>
+        <p>
+            <label for="text">text</label>
+            <textarea name="text" id="text" class="commentInput"></textarea>
+        </p>
+        <p>
+            <label for="postedBefore">Posted Before:</label>
+            <input type="date" name="postedBefore" class="commentInput">
+        </p>
+        <p>
+            <label for="postedAfter">Posted After:</label>
+            <input type="date" name="postedAfter" class="commentInput">
+        </p>
+        <input type="submit" value="Search" onclick="return ValidateInput('commentInput' ,'any')">
+    }
+</div>
+<div class="forms" id="fans">
+    @using (Html.BeginForm("Search", "Fans", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <h3>Fans</h3>
+        <p>
+            <label for="firstName">First name</label>
+            <input type="text" name="firstName" class="fanInput">
+        </p>
+        <p>
+            <label for="lastName">Last name</label>
+            <input type="text" name="lastName" class="fanInput">
+        </p>
+        <p>
+            <label for="bornBefore">Born Before:</label>
+            <input type="date" name="bornBefore" class="fanInput">
+        </p>
+        <p>
+            <label for="bornAfter">Born After:</label>
+            <input type="date" name="bornAfter" class="fanInput">
+        </p>
+        <p>
+            <input id="seniority_checkbox" type="checkbox" class="checkbox" onclick="SeniorityCheckbox()" checked />
+            <label for="seniority">Seniority</label>
+            <input id="seniority" name="seniority" type="range" min=1 max=10 value="1" step=1 oninput="outputUpdate(value)">
+            <output id=volume class="fanInput"> 1 </output>
+        </p>
+        <input type="submit" value="Search" onclick="return ValidateInput('fanInput', 'any')">
+    }
+</div>
+<div class="forms" id="postComment">
+    @using (Html.BeginForm("JoinPostComments", "Search", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <h3>Search for posts that meets the requirements and also have a comment that meets the requirements.</h3>
+        <p>
+            <label for="postText">Post's Text</label>
+            <textarea name="postText" id="postText" class="crossInput"></textarea>
+        </p>
+        <p>
+            <label for="commentText">Comment's Text</label>
+            <textarea name="commentText" id="commentText" class="crossInput"></textarea>
+        </p>
+        <input type="submit" value="Search" onclick="return ValidateInput('crossInput', 'all')">
+    }
+</div>

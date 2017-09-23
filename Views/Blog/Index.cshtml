@@ -1,0 +1,124 @@
+﻿@{
+    ViewBag.Title = "Blog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/Blog/blog.js"></script>
+
+<div id="mainContent">
+    @if (Model.Count == 0)
+    {
+        <div>No posts found.</div>
+    }
+    else
+    {
+        foreach (ShauliFinalProject.Models.Post post in Model)
+        {
+            <section id="post @post.Id">
+                <article class="blogPost">
+                    <header>
+                        <h2>@post.Headline</h2>
+                        <p>Category: @Html.ActionLink(post.Category.ToString(), "GetPostsByCategory", "Search", new { category = (int)post.Category }, null)</p>
+                        <p>
+                            Posted on <time datetime="2009-06-29T23:31+01:00">@post.Timestamp</time> by <a href="@post.Website">@post.Author</a> - <a href="#comments @post.Id">
+                                @{if (post.Comments != null)
+                                    {<label id="commentCounter @post.Id">@post.Comments.Count</label>}
+                                    else
+                                    { <label id="commentCounter @post.Id">0</label> }} comments
+                            </a>
+                        </p>
+                    </header>
+                    <div>
+                        @post.Content
+                    </div>
+                   @if (post.ImageUrl != null && post.ImageUrl != string.Empty)
+                    {
+                    <span class="post-img-title">Attached Image:</span>
+                        <img src="~/Images/@post.ImageUrl" alt="Pic" />
+                   }
+
+                @if (post.VideoUrl != null && post.VideoUrl != string.Empty)
+                    {
+                    <span class="post-img-title">Attached Video:</span>
+                        <video controls="controls">
+                            <source src="~/Videos/@post.VideoUrl" type="video/mp4" />
+                            Your browser does not support the video tag.
+                        </video>
+                }
+                </article>
+            </section>
+            <section id="comments @post.Id" class="comments">
+                @{
+                    if (post.Comments != null)
+                    {
+                        foreach (ShauliFinalProject.Models.Comment currComment in post.Comments)
+                        {
+                            <article>
+                                <header>
+                                    <a href="@currComment.Website">@currComment.Headline by @currComment.Author</a> on <time datetime="2009-06-29T23:35:20+01:00">@currComment.Timestamp</time>
+                                </header>
+                                <p>@currComment.Content</p>
+                            </article>
+                        }
+                    }
+                }
+            </section>
+            <section>
+                @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                <form method="post" class="addCommentForm">
+                    <div class="form-horizontal">
+                        <h4>Add your comment:</h4>
+                        <hr>
+                        <div class="form-group">
+                            <input value="@post.Id" data-val="true" id="PostId" name="PostId" type="hidden" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="Headline">Headline</label>
+                            <input class="text-box single-line" data-val="true" id="Headline" name="Headline" type="text" required />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="Author">Author</label>
+                            <input type="text" id="Author" name="Author" class="text-box single-line" required />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="Website">Author's website</label>
+                            <input type="text" class="text-box single-line" id="Website" name="Website" required />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="Content">Content</label>
+                            <textarea id="Content" name="Content" class="text-box multi-line" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Create" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                }
+
+                </section>
+
+
+                        }
+                    }
+</div>
+
+<aside>
+    <section>
+        <header>
+            <h3>@Html.ActionLink("Categories", "Categories", "Statistics")</h3>
+        </header>
+        <ul>
+            <li>@Html.ActionLink("Sport", "GetPostsByCategory", "Search", new { category = (int)ShauliFinalProject.Models.Category.Sport }, null)</li>
+            <li>@Html.ActionLink("Blog", "GetPostsByCategory", "Search", new { category = (int)ShauliFinalProject.Models.Category.Blog }, null)</li>
+            <li>@Html.ActionLink("News", "GetPostsByCategory", "Search", new { category = (int)ShauliFinalProject.Models.Category.News }, null)</li>
+            <li>@Html.ActionLink("Entertainment", "GetPostsByCategory", "Search", new { category = (int)ShauliFinalProject.Models.Category.Entertainment }, null)</li>
+        </ul>
+    </section>
+    <section>
+        <h3>@Html.ActionLink("Statistics", "PopularPosts", "Statistics")</h3>
+    </section>
+</aside>

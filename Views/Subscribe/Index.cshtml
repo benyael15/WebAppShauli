@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Email";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/Subscribe/subscribe.js"></script>
+<h2>Subscribe to updates via mail</h2>
+<form method="post" class="subscribeMailForm">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-2" for="FullName">Full Name:</label>
+            <input class="text-box single-line" id="FullName" name="FullName" type="text" required />
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Email">Email:</label>
+            <input type="email" id="Email" name="Email" class="text-box single-line" required />
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="submit" class="btn btn-default" />
+            </div>
+        </div>
+        <div id="status"></div>
+        <div>
+            @Html.ActionLink("Back to Blog", "Index", "Blog")
+        </div>
+    </div>
+</form>
+

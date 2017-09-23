@@ -1,0 +1,73 @@
+﻿@using ShauliFinalProject.Tools
+
+<!doctype html>
+<!--Manor Erel 307849836
+    Avia Carmi 307905679 -->
+<html>
+<head>
+    @*<title>@ViewBag.Title</title>*@
+    <link href="~/Content/Blog.css" rel="stylesheet" type="text/css" media="screen" />
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/Shared/layout.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Ha-Blog Shel Shauli</h1>
+    </header>
+    @if (LoginManager.Instance.CurrentLogedUser != null)
+    {
+    <h3>Hello @LoginManager.Instance.CurrentLogedUser.UserName</h3>
+    }
+    <canvas id="canvas" width="1000" height="40"></canvas>
+    <nav>  
+        <!-- Navigation -->
+        <ul>
+            @{string currentController = ViewContext.RouteData.Values["controller"].ToString();}
+            <li class="@(currentController == "Blog" ? "selected" : "")">@Html.ActionLink("Blog", "Index", "Blog")</li>
+            <li class="@(currentController == "Fans" ? "selected" : "")">@Html.ActionLink("Fan Club", "Index", "Fans")</li>
+            <li class="@(currentController == "Search" ? "selected" : "")">@Html.ActionLink("Search", "Index", "Search")</li>
+            @*<li class="@(currentController == "Statistics" ? "selected" : "")">@Html.ActionLink("Statistics", "PopularPosts", "Statistics")</li>*@
+            @if (LoginManager.Instance.CurrentLogedUser == null)
+            {
+            <li class="subscribe">
+                <a id="register" href="/BlogUsers/Create">Register</a><a id="login" href="/BlogUsers/Login">Login</a> </li>
+            }
+            else
+            {
+            if (LoginManager.Instance.CurrentLogedUser.IsAdmin)
+            {
+                <li>@Html.ActionLink("Manage", "Index", "Posts")</li>
+            }
+                <li>@Html.ActionLink("Log Out", "Logout", "BlogUsers")</li>
+            }
+           
+
+            <li class="subscribe"><img src="~/Content/Images/rss.png" /><a href="/Subscribe">Subscribe via Mail</a></li>
+        </ul>
+    </nav>
+    <section id="intro">
+        <!-- Introduction -->
+        <header>
+            <h2>Do you have questions for me?</h2>
+        </header>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
+        <img src="~/Content/Images/intro_shauli.png" alt="Shauli" />
+    </section>
+    <div id="content">
+        @RenderBody()
+    </div>
+    <footer>
+        <!-- Footer -->
+        <div>
+            <section id="about">
+                <h3>About</h3>
+                <p>This is a blog of the parlament!</p>
+            </section>
+            <section id="popular">
+                <h3>Popular</h3>
+                <ul id="popularList"></ul>
+            </section>
+        </div>
+    </footer>
+</body>
+</html>

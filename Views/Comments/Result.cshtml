@@ -1,0 +1,27 @@
+﻿@model IEnumerable<ShauliFinalProject.Models.Comment>
+@{
+    ViewBag.Title = "Results";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Comments</h2>
+@{if (Model.Count() == 0)
+    {
+        <div>
+            Sorry, No comments found.
+        </div>
+    }
+    else
+    {
+        foreach (ShauliFinalProject.Models.Comment currComment in Model)
+        {
+            <article>
+                <header>
+                    <!--    <h4>currComment.Headline</h4> -->
+                    <a href="@currComment.Website">@currComment.Author</a> on <time datetime="2009-06-29T23:35:20+01:00">@currComment.Timestamp</time>
+                </header>
+                <p>@currComment.Content</p>
+                Commented on post <a href="~/Posts/Search?id=@currComment.PostId">@currComment.PostId</a>
+            </article>
+        }
+    }
+}
